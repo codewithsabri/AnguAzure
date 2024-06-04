@@ -1,0 +1,9 @@
+<h2>Tweets</h2>
+<div *ngFor="let tweet of tweets">
+  <tweet [data]="tweet" (emitTweetId)="handleTweetId($event)"></tweet>
+</div>
+
+<h3>Received Tweet IDs:</h3>
+<ul>
+  <li *ngFor="let id of receivedTweetIds">{{ id }}</li>
+</ul>
