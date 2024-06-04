@@ -19,10 +19,12 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - name: Set up Node.js
+      - name: Use Node.js 18.13.0
         uses: actions/setup-node@v3
         with:
-          node-version: '18.13.0' # Updated Node.js version to meet Angular CLI requirements
+          node-version: '18.13.0'
+      - name: Confirm Node.js version
+        run: node -v
       - name: Install Dependencies
         run: npm install
       - name: Build And Deploy
