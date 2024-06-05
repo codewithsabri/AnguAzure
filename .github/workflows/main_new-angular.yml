@@ -1,3 +1,6 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
 name: Build and deploy Node.js app to Azure Web App - New-angular
 
 on:
@@ -22,9 +25,8 @@ jobs:
         run: |
           npm install
           npm run build
-
       - name: Zip artifact for deployment
-        run: zip -r release.zip dist/browser
+        run: zip release.zip dist/browser
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -38,17 +40,21 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
+    
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
           name: node-app
 
+      - name: Unzip artifact for deployment
+        run: unzip release.zip
+      
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'New-angular' # Ensure this is your actual Azure Web App name
-          package: release.zip
+          app-name: 'New-angular'
+          slot-name: 'Production'
+          package: ./dist/browser/
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CA43013F561340C7A5477A996F1F4362 }}
