@@ -1,53 +1,51 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy# More GitHub Actions for Azure: https://github.com/Azure/actions
-name: Build and deploy Node.js app to Azure Web App - [YourProjectName]
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+name: Build and deploy Node.js app to Azure Web App - New-angular
 
-on:  # Configure triggers for your workflow (e.g., push to main branch, manual runs)
-  push:    # Example trigger: runs on push to main branch
+on:  
+  push:    
     branches:      
-      - main  # You can specify multiple branches to trigger the workflow
-
-  # Or other triggers you prefer (e.g., pull requests, manual runs)
+      - main  
 
 jobs:
-  build:    # Job to build your Node.js application
-    runs-on: ubuntu-latest  # Run the build job on an Ubuntu virtual machine
+  build:    
+    runs-on: ubuntu-latest  
     steps:
-      - uses: actions/checkout@v4  # Check out the code from the Git repository
-      - name: Set up Node.js version   # Set up the desired Node.js version
+      - uses: actions/checkout@v4  
+      - name: Set up Node.js version
         uses: actions/setup-node@v3
-        with:
-          node-version: '18.x'  # Example version (update as needed)
-      - name: npm install, build, and test  # Install dependencies, build, and test
-        run: |
-          npm install          
-          npm run build  # Replace with your build command if different
-      - name: Zip artifact for deployment   # Create a ZIP archive of the built artifacts
-        run: zip release.zip dist/[YourBuildFolder]  # Replace with your build folder name
-      - name: Upload artifact for deployment job  # Upload the ZIP archive as an artifact
+        with: 
+          node-version: '18.x'  
+      - name: npm install, build, and test
+        run: | 
+          npm install
+          npm run build  
+      - name: Zip artifact for deployment
+        run: zip release.zip dist/browser
+      - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
-        with:
+        with: 
           name: node-app
           path: release.zip
 
-  deploy:  # Job to deploy the built application to Azure Web App
-    runs-on: ubuntu-latest  # Run the deployment job on an Ubuntu virtual machine
-    needs: build  # This job depends on the successful completion of the build job
-    environment:  # Configure environment variables for deployment
-      name: 'Production'  # Deployment environment name
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}  # Access output from deploy step
+  deploy:    
+    runs-on: ubuntu-latest  
+    needs: build  
+    environment:  
+      name: 'Production'  
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}  
     steps:
-      - name: Download artifact from build job  # Download the uploaded ZIP archive
+      - name: Download artifact from build job
         uses: actions/download-artifact@v3
-        with:
+        with: 
           name: node-app
-      - name: Unzip artifact for deployment  # Unzip the downloaded archive
+      - name: Unzip artifact for deployment
         run: unzip release.zip
-      - name: 'Deploy to Azure Web App'  # Deploy the application to Azure Web App
+      - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
-        with:
-          app-name: '[YourAppName]'  # Replace with your Azure Web App name
-          slot-name: 'Production'  # Deployment slot name (can be changed if needed)
-          package: ./dist/[YourBuildFolder]  # Path to the built artifacts (update based on your structure)
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_[YourSecretName] }}  # Replace with your secret name containing the publish profile
-
+        with: 
+          app-name: 'New-angular'
+          slot-name: 'Production'
+          package: ./dist/browser/
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CA43013F561340C7A5477A996F1F4362 }}
