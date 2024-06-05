@@ -57,5 +57,5 @@ jobs:
         with:
           app-name: 'New-angular'
           slot-name: 'Production'
-          package: .
+          package: ./dist/tweet-card/browser/
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CA43013F561340C7A5477A996F1F4362 }}
